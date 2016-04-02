@@ -214,6 +214,24 @@ public class ViewLudo extends JPanel implements MouseListener, ItemListener{
 
 			
 		if(value == 6){
+			if(cL.getNumber(playerID) == 4){
+				piece1.setSelected(true);
+				pieceID = 0;
+			}else if(cL.getNumber(playerID) == 3){
+				piece2.setSelected(true);
+				pieceID = 1;
+			}else if(cL.getNumber(playerID) == 2){
+				piece3.setSelected(true);
+				pieceID = 2;
+			}else if(cL.getNumber(playerID) == 1){
+				piece4.setSelected(true);
+				pieceID = 3;
+			}else{
+				piece1.setSelected(true);
+				pieceID = 0;
+			}
+			
+				
 			cL.setIsOut(playerID, pieceID);
 			cL.setNumber(playerID);	
 
