@@ -2,9 +2,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 
-public class ViewLudo extends JPanel implements MouseListener{
+public class ViewLudo extends JPanel implements MouseListener, ItemListener{
 	
-	public static Graphics g;
 	private boolean started = false;
 	private int value;
 	private int curX;
@@ -13,16 +12,44 @@ public class ViewLudo extends JPanel implements MouseListener{
 	private int Y;
 	private ControllerLudo cL;
 	private int playerID = 0;
+	private int pieceID = 0;
+
+	private static JLabel lblPlayer = new JLabel("Game started");
+	private static JRadioButton piece1; 
+	private static  JRadioButton piece2;
+	private static JRadioButton piece3;
+	private static JRadioButton piece4;
+
+	private ButtonGroup bgPieces;
+
 
 	public ViewLudo(){
 		cL = new ControllerLudo();
+
+		piece1 = new JRadioButton("1");
+		piece2 = new JRadioButton("2");
+		piece3 = new JRadioButton("3");
+		piece4 = new JRadioButton("4");
+
+		bgPieces = new ButtonGroup();
+
+		piece1.setSelected(true);
+		piece1.addItemListener(this);
+		piece2.addItemListener(this);
+		piece3.addItemListener(this);
+		piece4.addItemListener(this);
+
+		bgPieces.add(piece1);
+		bgPieces.add(piece2);
+		bgPieces.add(piece3);
+		bgPieces.add(piece4);
+		
 		setBackground(Color.WHITE);
 		addMouseListener(this);
 	}
 
 	public void paintComponent(Graphics g){
 		super.paintComponent(g);
-		this.g = g;
 
 		g.setColor(Color.BLACK);
 	
@@ -44,20 +71,18 @@ public class ViewLudo extends JPanel implements MouseListener{
 		g.setColor(Color.WHITE);
 		g.clearRect(361, 261, 89, 89);
 
+		paintDie(g);
 		if(started == true){
 			paintRealDeal(g);
 		}	
 
-		cL.kickOut(playerID);
 
-		paintDie(g, value);	
 		paintBigCircles(g);
 		paintLittleCircles(g);
 		paintStuck(g);
 		paintImportantTiles(g);
 		
 		paintCurrentOfAll(g);
-
 	}
 
 	public void paintBigCircles(Graphics g){
@@ -109,49 +134,49 @@ public class ViewLudo extends JPanel implements MouseListener{
 			if(id == 0){
 				g.setColor(new Color(168, 255, 166));
 				if(cL.getNumber(id) < 4)
-					g.fillOval(305, 210, 30, 30);
+					g.fillOval(305, 210, 20, 20);
 				if(cL.getNumber(id) < 3)
-					g.fillOval(255, 210, 30, 30);
+					g.fillOval(255, 210, 20, 20);
 				if(cL.getNumber(id) < 2)
-					g.fillOval(305, 160, 30, 30);
+					g.fillOval(305, 160, 20, 20);
 				if(cL.getNumber(id) < 1)
-					g.fillOval(155, 160, 30, 30);
+					g.fillOval(155, 160, 20, 20);
 			}
 
 			if(id == 1){
 				g.setColor(new Color(255, 166, 166));
 				if(cL.getNumber(id) < 4)
-					g.fillOval(535, 210, 30, 30);
+					g.fillOval(535, 210, 20, 20);
 				if(cL.getNumber(id) < 3)
-					g.fillOval(485, 210, 30, 30);
+					g.fillOval(485, 210, 20, 20);
 				if(cL.getNumber(id) < 2)
-					g.fillOval(535, 160, 30, 30);
+					g.fillOval(535, 160, 20, 20);
 				if(cL.getNumber(id) < 1)
-					g.fillOval(485, 160, 30, 30);
+					g.fillOval(485, 160, 20, 20);
 			}
 		
 			if(id == 2){
 				g.setColor(new Color(148, 158, 223));
 				if(cL.getNumber(id) < 4)
-					g.fillOval(535, 420, 30, 30);
+					g.fillOval(535, 420, 20, 20);
 				if(cL.getNumber(id) < 3)
-					g.fillOval(485, 420, 30, 30);
+					g.fillOval(485, 420, 20, 20);
 				if(cL.getNumber(id) < 2)
-					g.fillOval(535, 370, 30, 30);
+					g.fillOval(535, 370, 20, 20);
 				if(cL.getNumber(id) < 1)
-					g.fillOval(485, 370, 30, 30);
+					g.fillOval(485, 370, 20, 20);
 			}
 	
 			if(id == 3){
 				g.setColor(new Color(252, 255, 166));
 				if(cL.getNumber(id) < 4)
-					g.fillOval(305, 420, 30, 30);
+					g.fillOval(305, 420, 20, 20);
 				if(cL.getNumber(id) < 3)
-					g.fillOval(255, 420, 30, 30);
+					g.fillOval(255, 420, 20, 20);
 				if(cL.getNumber(id) < 2)
-					g.fillOval(305, 270, 30, 30);
+					g.fillOval(305, 270, 20, 20);
 				if(cL.getNumber(id) < 1)
-					g.fillOval(255, 370, 30, 30);
+					g.fillOval(255, 370, 20, 20);
 			}
 		}	
 		
@@ -186,55 +211,82 @@ public class ViewLudo extends JPanel implements MouseListener{
 	}	
 
 	private void paintRealDeal(Graphics g){
-		value = cL.rollDie();
 
-		for(int i=0; i<value; i++){
-			curX = cL.getCurX(playerID);
-			curY = cL.getCurY(playerID);
-	
-			g.setColor(Color.WHITE);
-			g.fillOval(curX+5, curY+5, 20, 20);
-	
 			
-			if(playerID == 0)
-				g.setColor(Color.GREEN);
-			else if(playerID == 1)
-				g.setColor(Color.RED);
-			else if(playerID == 2)
-				g.setColor(Color.BLUE);
-			else if(playerID == 3)
-				g.setColor(Color.YELLOW);
-			X = cL.getX(playerID);
-			Y = cL.getY(playerID);
-		
-			g.fillOval(X+5, Y+5, 20, 20);
+		if(value == 6){
+			cL.setIsOut(playerID, pieceID);
+			cL.setNumber(playerID);	
 
-			curX = X;
-			curY = Y;
+			return;
 		}
+
+		else{
+			if(cL.getIsOut(playerID, pieceID) == false);
+								
+		
+			else{	
+				curX = cL.getCurX(playerID, pieceID);
+				curY = cL.getCurY(playerID, pieceID);
+
+				for(int i=0; i<value; i++){
+					
+					g.setColor(Color.WHITE);
+					g.fillOval(curX+5, curY+5, 20, 20);
+	
+						
+					if(playerID == 0)
+						g.setColor(Color.GREEN);
+					else if(playerID == 1)
+						g.setColor(Color.RED);
+					else if(playerID == 2)
+						g.setColor(Color.BLUE);
+					else if(playerID == 3)
+						g.setColor(Color.YELLOW);
+					X = cL.getX(playerID, pieceID);
+					Y = cL.getY(playerID, pieceID);
+			
+					g.fillOval(X+5, Y+5, 20, 20);
+
+					curX = X;
+					curY = Y;
+				}
+			}
+		}
+
+		cL.kickOut(playerID, pieceID);
+
+		playerID++;
+		if(playerID > 3)
+			playerID = 0;				
 	}
 	
 	private void paintCurrentOfAll(Graphics g){
 		int curX, curY;
 
 		for(int id=0; id < 4; id++){
-			curX = cL.getCurX(id);
-			curY = cL.getCurY(id);
+			for(int pid=0; pid < 4; pid++){
+		
+				if(cL.getIsOut(id, pid) == false)
+					continue;
+
+				curX = cL.getCurX(id, pid);
+				curY = cL.getCurY(id, pid);
+				
+				if(id == 0)
+					g.setColor(Color.GREEN);
+				else if(id == 1)
+					g.setColor(Color.RED);
+				else if(id == 2)
+					g.setColor(Color.BLUE);
+				else if(id == 3)
+					g.setColor(Color.YELLOW);
 			
-			if(id == 0)
-				g.setColor(Color.GREEN);
-			else if(id == 1)
-				g.setColor(Color.RED);
-			else if(id == 2)
-				g.setColor(Color.BLUE);
-			else if(id == 3)
-				g.setColor(Color.YELLOW);
-			
-			g.fillOval(curX+5, curY+5, 20, 20);
+				g.fillOval(curX+5, curY+5, 20, 20);
+			}
 		}
 	}
 
-	private void paintDie(Graphics g, int value){
+	private void paintDie(Graphics g){
 		
 		g.setColor(Color.BLACK);
 
@@ -288,14 +340,25 @@ public class ViewLudo extends JPanel implements MouseListener{
 
 	}
 
+	public void itemStateChanged(ItemEvent evt){
+		if(evt.getSource() == piece1 && evt.getStateChange() == 1)
+			pieceID = 0;
+		if(evt.getSource() == piece2 && evt.getStateChange() == 1)
+			pieceID = 1;
+		if(evt.getSource() == piece3 && evt.getStateChange() == 1)
+			pieceID = 2;
+		if(evt.getSource() == piece4 && evt.getStateChange() == 1)
+			pieceID = 3;
+	}
+
 	public void mouseClicked(MouseEvent e){
 		started = true;
+
+		value = cL.rollDie();
 	
+		lblPlayer.setText(cL.getColor(playerID));
 		repaint();
 	
-		playerID++;
-		if(playerID > 3)
-			playerID = 0;
 	}
 
 	public void mouseExited(MouseEvent e){}
@@ -306,15 +369,21 @@ public class ViewLudo extends JPanel implements MouseListener{
 
 	public void mouseEntered(MouseEvent e){}
 
-	private Graphics getG(){
-		return this.g;
-	}
 
 	public static void main(String[] args){
 		JFrame frame = new JFrame();
 		frame.setSize(800, 800);
 		frame.setTitle("PROJECT LUDO");
-		frame.setContentPane(new ViewLudo());
+		
+		lblPlayer.setBounds(50, 50, 100, 100);
+		ViewLudo vL = new ViewLudo();
+		vL.add(lblPlayer);
+		vL.add(piece1);
+		vL.add(piece2);
+		vL.add(piece3);
+		vL.add(piece4);
+
+		frame.setContentPane(vL);
 
 		frame.setVisible(true);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

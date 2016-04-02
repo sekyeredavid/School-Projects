@@ -6,66 +6,31 @@ public class ControllerLudo{
 	private Random rand;
 	private int value;
 	private PlayerLudo[] players = new PlayerLudo[4];
-	private int[] sPX = new int[6];
-	private int[] sPY = new int[6];
 
 	public ControllerLudo(){
-		players[0] = new PlayerLudo("green", 36);
-		players[1] = new PlayerLudo("red", 3);
-		players[2] = new PlayerLudo("blue", 14);
-		players[3] = new PlayerLudo("yellow", 25);
 		rand = new Random();	
-		
-		setSPValues();
-		
+
+		init();
 	}
 
-	public void setSPValues(){
+	public void init(){
+		int[] XposG = {240, 270, 300, 330, 360, 360, 360, 360, 360, 390, 420, 420, 420, 420, 420, 450, 480, 510, 540, 570, 570, 570, 540, 510, 480, 450, 420, 420, 420, 420, 420, 390, 360, 360, 360, 360, 360, 330, 300, 270, 240, 210, 210, 240, 270, 300, 330, 360};
+		int[] YposG = {260, 260, 260, 260, 230, 200, 170, 140, 110, 110, 110, 140, 170, 200, 230, 260, 260, 260, 260, 260, 290, 320, 320, 320, 320, 320, 350, 380, 410, 440, 470, 470, 470, 440, 410, 380, 350, 320, 320, 320, 320, 320, 290, 290, 290, 290, 290, 290};
+		players[0] = new PlayerLudo("green", XposG, YposG);
 
-		int j=0;
-		for(int i=210; i<=360; i+=30){
-			sPX[j] = i;
-			j++;
-		}
-		for(int i=0; i<5; i++){ 
-			sPY[i] = 290;
-		}
-		players[0].specialPositionX = sPX;
-		players[0].specialPositionY = sPY;
+		int[] XposR = {420, 420, 420, 420, 450, 480, 510, 540, 570, 570, 570, 540, 510, 480, 450, 420, 420, 420, 420, 420, 390, 360, 360, 360, 360, 360, 330, 300, 270, 240, 210, 210, 210, 240, 270, 300, 330, 360, 360, 360, 360, 360, 390, 390, 390, 390, 390, 390};
+		int[] YposR = {140, 170, 200, 230, 260, 260, 260, 260, 260, 290, 320, 320, 320, 320, 320, 350, 380, 410, 440, 470, 470, 470, 440, 410, 380, 350, 320, 320, 320, 320, 320, 290, 260, 260, 260, 260, 260, 230, 200, 170, 140, 110, 110, 140, 170, 200, 230, 260};
+		players[1] = new PlayerLudo("red", XposR, YposR);
 
-		for(int i=0; i<5; i++){
-			sPX[i] = 390;
-		}
-		j=0;
-		for(int i=110; i<=260; i+=30){
-			sPY[j] = i;
-			j++;
-		} 
-		players[1].specialPositionX = sPX;
-		players[1].specialPositionY = sPY;
+		int[] XposB = {540, 510, 480, 450, 420, 420, 420, 420, 420, 390, 360, 360, 360, 360, 360, 330, 300, 270, 240, 210, 210, 210, 240, 270, 300, 330, 360, 360, 360, 360, 360, 390, 420, 420, 420, 420, 420, 450, 480, 510, 540, 570, 570, 540, 510, 480, 450, 420};
+		int[] YposB = {320, 320, 320, 320, 350, 380, 410, 440, 470, 470, 470, 440, 410, 380, 350, 320, 320, 320, 320, 320, 290, 260, 260, 260, 260, 260, 230, 200, 170, 140, 110, 110, 110, 140, 170, 200, 230, 260, 260, 260, 260, 260, 290, 290, 290, 290, 290, 290};
+		players[2] = new PlayerLudo("blue", XposB, YposB);
 
-		j = 0;
-		for(int i=570; i>=420; i-=30){
-			sPX[j] = i;
-			j++;
-		}
-		for(int i=0; i<5; i++){
-			sPY[i] = 290;
-		}
-		players[2].specialPositionX = sPX;
-		players[2].specialPositionY = sPY;
 
-		j = 0;
-		for(int i=0; i<5; i++){
-			sPX[i] = 390;
-		}
-		for(int i=470; i>=320; i-=30){
-			sPY[j] = i;
-			j++;
-		}
-		players[3].specialPositionX = sPX;
-		players[3].specialPositionY = sPY;
-
+		int[] XposY = {360, 360, 360, 360, 330, 300, 270, 240, 210, 210, 210, 240, 270, 300, 330, 360, 360, 360, 360, 360, 390, 420, 420, 420, 420, 420, 450, 480, 510, 540, 570, 570, 570, 540, 510, 480, 450, 420, 420, 420, 420, 420, 390, 390, 390, 390, 390, 390};
+		int[] YposY = {440, 410, 380, 350, 320, 320, 320, 320, 320, 290, 260, 260, 260, 260, 260, 230, 200, 170, 140, 110, 110, 110, 140, 170, 200, 230, 260, 260, 260, 260, 260, 290, 320, 320, 320, 320, 320, 350, 380, 410, 440, 470, 470, 440, 410, 380, 350, 320};
+		players[3] = new PlayerLudo("yellow", XposY, YposY);
+ 		
 	}
 
 	public int rollDie(){
@@ -74,33 +39,50 @@ public class ControllerLudo{
 		return value;		
 	}
 
-	public int getCurX(int id){
+	public String getColor(int id){
+		return players[id].getColor();
+	}
+
+	public int getCurX(int id, int pid){
 		int curX;
-		curX = players[id].getCurrentX();
-		
-		if(players[id].getPosition() == 44)
-			players[id].setPosition(0);
+		curX = players[id].getCurrentX(pid);
 
 		return curX;
 	}
 
-	public int getCurY(int id){
-		return players[id].getCurrentY();
+	public int getCurY(int id, int pid){
+
+		return players[id].getCurrentY(pid);
 	}
 
-	public int getX(int id){
+	public int getX(int id, int pid){
 		int X;
-
-		X = players[id].getX();
-		players[id].setMoves(players[id].getMoves()+1);
+		
+		if(players[id].isHome(pid))
+			X = getCurX(id, pid);
+		else
+			X = players[id].getX(pid);
 		
 		return X;
 	}
 
-	public int getY(int id){
-		return players[id].getY();
+	public int getY(int id, int pid){
+		int Y;
+
+		if(players[id].isHome(pid))
+			Y = getCurY(id, pid);
+		else			
+			Y = players[id].getY(pid);
+		return Y;
 	}
 
+	public void setIsOut(int id, int pid){
+		players[id].setIsOut(true, pid);
+	}
+
+	public boolean getIsOut(int id, int pid){
+		return players[id].getIsOut(pid);
+	}
 	public int getNumber(int id){
 		return players[id].getNumber();
 	}
@@ -109,19 +91,24 @@ public class ControllerLudo{
 		players[id].setNumber(players[id].getNumber()-1);
 	}
 
-	public void kickOut(int cID){
+	public void kickOut(int cID, int cPID){
 		for(int oID=0; oID<4; oID++){
 			if(cID == oID)
 				continue;
 			else{
-				if(players[cID].getPosition() == players[oID].getPosition()){
-					players[oID].setNumber(players[oID].getNumber()+1);
-					players[oID].setPosition(players[oID].START_POSITION);
-					players[oID].setMoves(0);
-				}	
-
+				for(int oPID=0; oPID<4; oPID++){
+					if(players[cID].getCurrentX(cPID) == players[oID].getCurrentX(oPID) && players[cID].getCurrentY(cPID) == players[oID].getCurrentY(oPID)){
+						players[oID].setNumber(players[oID].getNumber()+1);
+						players[oID].setIsOut(false, oPID);
+						players[oID].setPosition(0, oPID);
+					}	
+				}
 			}
 		}
+	}
+
+	public boolean isHome(int id, int pid){
+	 	return players[id].isHome(pid);
 	}
 	
 }

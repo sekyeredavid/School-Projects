@@ -1,95 +1,70 @@
-
-
 public class PlayerLudo{
 
-	public int[] specialPositionX = new int[6];	
-	public int[] specialPositionY = new int[6];
-	private int position;
-	private static int[] allPositionsX = {360, 390, 420, 420, 420, 420, 420, 450, 480, 510, 540, 570, 570, 570, 540, 510, 480, 450, 420, 420, 420, 420, 420, 390, 360, 360, 360, 360, 360, 330, 300, 270, 240, 210, 210, 210, 240, 270, 300, 330, 360, 360, 360, 360};
-	private static int[] allPositionsY = {110, 110, 110, 140, 170, 200, 230, 260, 260, 260, 260, 260, 290, 320, 320, 320, 320, 320, 350, 380, 410, 440, 470, 470, 470, 440, 410, 380, 350, 320, 320, 320, 320, 320, 290, 260, 260, 260, 260, 260, 230, 200, 170, 140};
-	private int moves = 0;
-	private boolean home = false;
+	private int[] position = new int[4];
+	private int[] allPositionsX = new int[47];
+	private int[] allPositionsY = new int[47];
+	private boolean[] home = new boolean[4];
 	private String color;
 	private int number = 4;
-	public final int START_POSITION;
-	private int specialPosition = 0;
+	public final int START_POSITION = 0;
+	public boolean[] isOut = new boolean[4];
+	private int pieceID;
 
-	public PlayerLudo(String color, int position){
+	public PlayerLudo(String color, int[] Xpos, int[] Ypos){
+
 		this.color = color;
-		this.position = position;
-		this.START_POSITION = position;
+		allPositionsX = Xpos;
+		allPositionsY = Ypos;
 	
 	}
 
-	public int getMoves(){
-		return moves;
+	public void setIsOut(boolean isOut, int pieceID){
+		this.isOut[pieceID] = isOut;
 	}
 
-	public void setMoves(int moves){
-		this.moves = moves;
+	public boolean getIsOut(int pieceID){
+		return isOut[pieceID];
 	}
 	
 	public int getStartPosition(){
 		return START_POSITION;	
 	}
 
-	public void setPosition(int position){
-		this.position =  position;
+	public void setPosition(int position, int pieceID){
+		this.position[pieceID] = position;
 	}
 
-	public int getPosition(){
-		return position;
+	public int getPosition(int pieceID){
+		return position[pieceID];
 	}
 
-	public int getCurrentX(){
-
-		if(home)
-			return specialPositionX[specialPosition];
-
-		if(position == 44)
-			position = 0;
-
-		if(moves >= 42){
-			return specialPositionX[specialPosition];
-		}
-		else	
-			return allPositionsX[position];
+	public int getCurrentX(int pieceID){
+		if(position[pieceID] == 47)
+			home[pieceID] = true;
+		return allPositionsX[position[pieceID]];
 	}
 
-	public int getCurrentY(){
-		return allPositionsY[position];
+	public int getCurrentY(int pieceID){
+		return allPositionsY[position[pieceID]];
 	}
 
-	public int getX(){
-		position += 1;
-
-		if(specialPosition == 5)
-			home = true;
-
-		if(home)
-			return specialPositionX[specialPosition];
-
-		if(position == 44)
-			position = 0;
-
-		if(moves >= 42){
-			specialPosition += 1;
-			return specialPositionX[specialPosition];
-		}
-		else
-			return allPositionsX[position];
+	public int getX(int pieceID){
+		position[pieceID] += 1;
+	
+		return allPositionsX[position[pieceID]];
+	
 	}
 
-	public int getY(){
-		return allPositionsY[position];
+	public int getY(int pieceID){
+		return allPositionsY[position[pieceID]];
 	}
 
-	public boolean getHome(){
-		return home;
+	public void setHome(boolean home, int pieceID){
+		this.home[pieceID] = home;
 	}
 
-	public void setHome(boolean home){
-		this.home = home;
+	public boolean isHome(int pieceID){ 
+		return home[pieceID];
 	}
 
 	public String getColor(){
@@ -102,14 +77,6 @@ public class PlayerLudo{
 
 	public void setNumber(int number){
 		this.number = number;
-	}
-
-	public void setSpecialPositionsX(int[] specialPositionX){
-		this.specialPositionX = specialPositionX;
-	}
-
-	public void setSpecialPositionsY(int[] specialPositionY){
-		this.specialPositionY = specialPositionY;
 	}
 }
 
